@@ -52,6 +52,7 @@ func (i *Info) IsOlderThan(requiredVersion string) (bool, error) {
 // If there is no version installed, a blank string is returned.
 func GetInstalledVersion() string {
 	var mod = syscall.NewLazyDLL("WebView2Loader")
+	// https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution#understand-the-webview2-runtime-and-installer-preview
 	var GetAvailableCoreWebView2BrowserVersionString = mod.NewProc("GetAvailableCoreWebView2BrowserVersionString")
 
 	err := mod.Load()
@@ -75,6 +76,7 @@ func GetInstalledVersion() string {
 	return version
 }
 func downloadBootstrapper() (string, error) {
+	// "2124701" "2099617
 	bootstrapperURL := `https://go.microsoft.com/fwlink/p/?LinkId=2124703`
 	installer := filepath.Join(os.TempDir(), `MicrosoftEdgeWebview2Setup.exe`)
 
@@ -103,7 +105,6 @@ func downloadBootstrapper() (string, error) {
 // Returns true if the installer ran successfully.
 // Returns an error if something goes wrong
 func InstallUsingEmbeddedBootstrapper() (bool, error) {
-
 	installer := filepath.Join(os.TempDir(), `MicrosoftEdgeWebview2Setup.exe`)
 	err := os.WriteFile(installer, setupexe, 0755)
 	if err != nil {

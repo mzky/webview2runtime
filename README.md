@@ -29,19 +29,11 @@ package mypackage
 import "github.com/leaanthony/webview2runtime"
 
 func BootstrapRuntime() error {
-    var err error
     shouldInstall := true
     message := "The WebView2 runtime is required. Press Ok to install."
     installedVersion := webview2runtime.GetInstalledVersion()
-    if installedVersion != nil {
-        shouldInstall, err = installedVersion.IsOlderThan("90.0.818.66")
-        if err != nil {
-            _ = webview2runtime.Error(err.Error(), "Error")
-            return err
-        }
-        if shouldInstall {
-            message = "The WebView2 runtime needs updating. Press Ok to install."
-        }
+    if installedVersion != "" {
+        return nil
     }
     if shouldInstall {
         confirmed, err := webview2runtime.Confirm(message, "Missing Requirements")
